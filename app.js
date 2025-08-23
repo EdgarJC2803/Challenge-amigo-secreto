@@ -14,14 +14,15 @@ function asignarTextoElemento(elemento, texto) {
 }
 
 function verificarIntento() {
+}
     let nombreDeAmigo = document.getElementById('nombreDeAmigo').value;
     
     if (nombreDeAmigo === nombreSecreto) {
         asignarTextoElemento('p',`Acertaste el Nombre en ${intentos} ${(intentos === 1) ? 'vez' : 'veces'}`);
         document.getElementById('reiniciar').removeAttribute('disabled');
     } else {
-        //El usuario no acertó.
-        if (nombreDeAmigo === nombreSecreto) {
+        // El usuario no acertó.
+        if (agregarAmigo.includes(nombreDeAmigo)) {
             asignarTextoElemento('p','El Nombre no coincide');
         } else {
             asignarTextoElemento('p','El Nombre no existe');
@@ -55,14 +56,17 @@ function generarNombreSecreto() {
     }
 }
 
+function condicionesIniciales() {
+    intentos = 1;
+    nombreSecreto = generarNombreSecreto();
+    asignarTextoElemento('p', 'Ingresa el nombre de tu amigo secreto');
+    document.getElementById('nombreDeAmigo').value = '';
+    document.getElementById('reiniciar').setAttribute('disabled','true');
+}
+
 function reiniciarJuego() {
-    //limpiar caja
-    limpiarCaja(); 
-
+    limpiarCaja();
     condicionesIniciales();
-
-    document.querySelector('#reiniciar').setAttribute('disabled','true');
-    
 }
 
 condicionesIniciales();
