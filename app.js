@@ -1,11 +1,10 @@
 // El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación. Aquí deberás desarrollar la lógica para resolver el problema.
-alert("Hola, Bienvenido al Desafio del Amigo Secreto de Alura-Latam!");
+alert("Bienvenido al Desafio del Amigo Secreto de Alura-Latam!");
 
-
-let nombreSecreto = 0;
+let agregarAmigo = 'Fernando, Mauricio, Juan, Maria, Ana, Carlos, Lucia, Pedro, Sofia, Diego, Laura, Andres, Elena, Javier, Paula, Roberto, Teresa, Victor, Sara, Gonzalo, Marta, Luis'.split(', ');
+let nombreSecreto = '';
 let intentos = 0;
 let listaNombresSorteados = [];
-let nombresMaximo = 10;
 
 
 function asignarTextoElemento(elemento, texto) {
@@ -15,17 +14,17 @@ function asignarTextoElemento(elemento, texto) {
 }
 
 function verificarIntento() {
-    let nombreDeAmigo = parseInt(document.getElementById('nombreDeAmigo').value);
+    let nombreDeAmigo = document.getElementById('nombreDeAmigo').value;
     
     if (nombreDeAmigo === nombreSecreto) {
         asignarTextoElemento('p',`Acertaste el Nombre en ${intentos} ${(intentos === 1) ? 'vez' : 'veces'}`);
         document.getElementById('reiniciar').removeAttribute('disabled');
     } else {
         //El usuario no acertó.
-        if (nombreDeAmigo = nombreSecreto) {
+        if (nombreDeAmigo === nombreSecreto) {
             asignarTextoElemento('p','El Nombre no coincide');
         } else {
-            asignarTextoElemento('p','El Nmbre no exixte');
+            asignarTextoElemento('p','El Nombre no existe');
         }
         intentos++;
         limpiarCaja();
@@ -38,33 +37,22 @@ function limpiarCaja() {
 }
 
 function generarNombreSecreto() {
-    
-    if (listaNombresSorteados(nombreGenerado)) {
+    // Generar un nombre aleatorio de la lista de amigos
+    let nombreGenerado = agregarAmigo[Math.floor(Math.random() * agregarAmigo.length)];
+
+    // Si ya sorteamos todos los nombres
+    if (listaNombresSorteados.length === agregarAmigo.length) {
+        asignarTextoElemento('p','Ya se sortearon todos los nombres posibles');
+        return '';
+    }
+
+    // Si el nombre generado está incluido en la lista
+    if (listaNombresSorteados.includes(nombreGenerado)) {
         return generarNombreSecreto();
     } else {
         listaNombresSorteados.push(nombreGenerado);
         return nombreGenerado;
     }
-
-    //Si ya sorteamos todos los nombres
-    if (listaNombresSorteados.length == numeroMaximo) {
-        asignarTextoElemento('p','Ya se sortearon todos los nombres posibles');
-    } else {
-        //Si el nombre generado está incluido en la lista 
-        if (listaNombresSorteados.includes(nombreGenerado)) {
-            return generarNombreSecreto();
-        } else {
-            listaNombresSorteados.push(nombreGenerado);
-            return nombreGenerado;
-        }
-    }
-}
-
-function condicionesIniciales() {
-    asignarTextoElemento('p','Juego del Amigo secreto de Alura-Latam!');
-    nombreSecreto = generarNombreSecreto();
-    intentos = 1;
-
 }
 
 function reiniciarJuego() {
