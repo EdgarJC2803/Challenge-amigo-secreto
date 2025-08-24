@@ -1,6 +1,9 @@
 // El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación. Aquí deberás desarrollar la lógica para resolver el problema.
 alert("Bienvenido al Desafio del Amigo Secreto de Alura-Latam!");
 
+// Asegúrate de que el botón de verificación llame a verificarIntento()
+// Por ejemplo, en tu HTML: <button onclick="verificarIntento()">Verificar</button>
+
 let agregarAmigo = 'Fernando, Mauricio, Juan, Maria, Ana, Carlos, Lucia, Pedro, Sofia, Diego, Laura, Andres, Elena, Javier, Paula, Roberto, Teresa, Victor, Sara, Gonzalo, Marta, Luis'.split(', ');
 let nombreSecreto = '';
 let intentos = 0;
@@ -14,18 +17,20 @@ function asignarTextoElemento(elemento, texto) {
 }
 
 function verificarIntento() {
-}
-    let nombreDeAmigo = document.getElementById('nombreDeAmigo').value;
+    let nombreDeAmigo = document.getElementById('amigo').value;
     
     if (nombreDeAmigo === nombreSecreto) {
-        asignarTextoElemento('p',`Acertaste el Nombre en ${intentos} ${(intentos === 1) ? 'vez' : 'veces'}`);
-        document.getElementById('reiniciar').removeAttribute('disabled');
+        asignarTextoElemento('#mensaje',`Acertaste el Nombre en ${intentos} ${(intentos === 1) ? 'vez' : 'veces'}`);
+        const reiniciarBtn = document.getElementById('reiniciar');
+        if (reiniciarBtn) {
+            reiniciarBtn.removeAttribute('disabled');
+        }
     } else {
         // El usuario no acertó.
         if (agregarAmigo.includes(nombreDeAmigo)) {
-            asignarTextoElemento('p','El Nombre no coincide');
+            asignarTextoElemento('#mensaje','El Nombre no coincide');
         } else {
-            asignarTextoElemento('p','El Nombre no existe');
+            asignarTextoElemento('#mensaje','El Nombre no existe');
         }
         intentos++;
         limpiarCaja();
@@ -34,39 +39,33 @@ function verificarIntento() {
 }
 
 function limpiarCaja() {
-    document.querySelector('#nombreDeAmigo').value = '';
+    document.getElementById('amigo').value = '';
+    document.getElementById('amigo').focus();
+    return;
 }
 
 function generarNombreSecreto() {
-    // Generar un nombre aleatorio de la lista de amigos
-    let nombreGenerado = agregarAmigo[Math.floor(Math.random() * agregarAmigo.length)];
-
     // Si ya sorteamos todos los nombres
     if (listaNombresSorteados.length === agregarAmigo.length) {
-        asignarTextoElemento('p','Ya se sortearon todos los nombres posibles');
+        asignarTextoElemento('#mensaje','Ya se sortearon todos los nombres posibles');
         return '';
     }
+    let nombreGenerado;
+    do {
+        nombreGenerado = agregarAmigo[Math.floor(Math.random() * agregarAmigo.length)];
+    } while (listaNombresSorteados.includes(nombreGenerado));
 
-    // Si el nombre generado está incluido en la lista
-    if (listaNombresSorteados.includes(nombreGenerado)) {
-        return generarNombreSecreto();
-    } else {
-        listaNombresSorteados.push(nombreGenerado);
-        return nombreGenerado;
+    listaNombresSorteados.push(nombreGenerado);
+    return nombreGenerado;
+}
+    const reiniciarBtn = document.getElementById('reiniciar');
+    if (reiniciarBtn) {
+        reiniciarBtn.setAttribute('disabled','true');
     }
-}
-
-function condicionesIniciales() {
-    intentos = 1;
+    document.getElementById('resultado').innerHTML = '';
+    // Si tienes un botón de reinicio, asegúrate de que exista en el HTML antes de manipularlo.
+    // document.getElementById('reiniciar')?.setAttribute('disabled','true');
+    
     nombreSecreto = generarNombreSecreto();
-    asignarTextoElemento('p', 'Ingresa el nombre de tu amigo secreto');
-    document.getElementById('nombreDeAmigo').value = '';
-    document.getElementById('reiniciar').setAttribute('disabled','true');
-}
-
-function reiniciarJuego() {
-    limpiarCaja();
-    condicionesIniciales();
-}
 
 condicionesIniciales();
