@@ -4,8 +4,19 @@ alert("Bienvenido al Desafio del Amigo Secreto de Alura-Latam!");
 // Variable global para almacenar los nombres de los amigos
 let amigos = [];
 
+// Obtener el elemento de input para el nombre
+const inputAmigo = document.getElementById('amigo');
+
+// Agregar un 'listener' para el evento 'keypress'
+inputAmigo.addEventListener('keypress', function(event) {
+    // Verificar si la tecla presionada es 'Enter'
+    if (event.key === 'Enter') {
+        agregarAmigo();
+    }
+});
+
 function agregarAmigo() {
-    let nombre = document.getElementById('amigo').value.trim(); // .trim() quita espacios en blanco
+    let nombre = inputAmigo.value.trim(); // .trim() quita espacios en blanco
     
     // Validación para no agregar nombres vacíos
     if (nombre === '') {
@@ -35,33 +46,24 @@ function mostrarAmigos() {
 }
 
 function limpiarCaja() {
-    document.getElementById('amigo').value = '';
+    inputAmigo.value = '';
 }
 
 function sortearAmigo() {
-    // Validar que haya al menos 2 personas para el sorteo
-    if (amigos.length < 2) {
-        alert("Deben haber al menos 2 participantes para el sorteo.");
+    // Validar que haya al menos 1 persona para el sorteo
+    if (amigos.length < 1) {
+        alert("Debes agregar al menos un participante para el sorteo.");
         return;
     }
     
-    // Copiar la lista para no modificar la original
-    let amigosSorteados = [...amigos];
-    
-    // Algoritmo de Fisher-Yates para barajar
-    for (let i = amigosSorteados.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [amigosSorteados[i], amigosSorteados[j]] = [amigosSorteados[j], amigosSorteados[i]];
-    }
-    
-    let resultado = document.getElementById('resultado');
+    let resultado = document.getElementById('ganador');
     resultado.innerHTML = ''; // Limpiar resultados anteriores
     
-    // Asignar parejas y mostrar el resultado
-    for (let i = 0; i < amigos.length; i++) {
-        let li = document.createElement('li');
-        let regalaA = (i === amigos.length - 1) ? amigosSorteados[0] : amigosSorteados[i + 1];
-        li.textContent = `${amigos[i]} le regala a ${regalaA}`;
-        resultado.appendChild(li);
-    }
+    // Seleccionar un nombre aleatorio
+    const nombreGanador = amigos[Math.floor(Math.random() * amigos.length)];
+    
+    // Mostrar el resultado en el HTML
+    let p = document.createElement('p');
+    p.textContent = `¡El nombre seleccionado es: ${nombreGanador}!`;
+    resultado.appendChild(p);
 }
