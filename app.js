@@ -16,7 +16,8 @@ inputAmigo.addEventListener('keypress', function(event) {
 });
 
 function agregarAmigo() {
-    let nombre = inputAmigo.value.trim(); // .trim() quita espacios en blanco
+    let nombre = inputAmigo.value.trim(); 
+    // .trim() quita espacios en blanco
     
     // Validación para no agregar nombres vacíos
     if (nombre === '') {
